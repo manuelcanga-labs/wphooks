@@ -109,3 +109,22 @@ class FiltersTests(unittest.TestCase):
         add_filter(hook_name, lambda x: x + "b", priority=10)
 
         self.assertEqual(apply_filters(hook_name, "start"), "startab")
+
+    def test_apply_filters_fewer_args_than_accepted(self):
+        """Test applying a filter with fewer arguments than accepted_args"""
+        hook_name: str = "test.fewer_args_filter"
+
+        # accepted_args=3 (val + 2 extras). But we pass fewer.
+        def hook(val, *extras):
+            return val + "".join(map(str, extras))
+
+        add_filter(hook_name, hook, accepted_args=3)
+
+        # Pass 0 extra args (total 1: val). 1 < 3. Should call hook(val).
+        self.assertEqual(apply_filters(hook_name, "a"), "a")
+
+        # Pass 1 extra arg (total 2: val, e1). 2 < 3. Should call hook(val, e1).
+        self.assertEqual(apply_filters(hook_name, "a", "b"), "ab")
+
+        # Pass 2 extra args (total 3: val, e1, e2). 3 == 3. Should call hook(val, e1, e2).
+        self.assertEqual(apply_filters(hook_name, "a", "b", "c"), "abc")

@@ -88,3 +88,32 @@ add_action("no_args_hook", no_args_callback, accepted_args=0)
 do_action("no_args_hook") 
 # Output: Executed without arguments!
 ```
+
+
+## Handling Fewer Arguments
+
+If the number of arguments passed to `do_action` is less than `accepted_args` specified in `add_action`, the callback will be called with the available arguments.
+
+```python
+from wphooks import add_action, do_action
+
+def optional_args_callback(a=None, b=None):
+    if a and b:
+        print(f"Called with {a} and {b}")
+    elif a:
+        print(f"Called with {a}")
+    else:
+        print("Called with no arguments")
+
+# Register action with accepted_args=2
+add_action("optional_hook", optional_args_callback, accepted_args=2)
+
+# Trigger with 2 arguments
+do_action("optional_hook", 1, 2) # Output: Called with 1 and 2
+
+# Trigger with 1 argument
+do_action("optional_hook", 1) # Output: Called with 1
+
+# Trigger with 0 arguments (only hook name)
+do_action("optional_hook") # Output: Called with no arguments
+```

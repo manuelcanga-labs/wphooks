@@ -72,6 +72,11 @@ def apply_filters(hook_name: str, default_value, *args):
         hook_name (str): The name of the filter hook.
         default_value (_type_): The value to filter.
 
+    Note:
+        If the number of arguments passed to apply_filters (including default_value)
+        is less than accepted_args specified in add_filter, the callback will be
+        called with the available arguments.
+
     Returns:
         The filtered value after all hooked functions are applied to it.
     """
@@ -79,8 +84,11 @@ def apply_filters(hook_name: str, default_value, *args):
     # pylint: disable-next=unused-variable
     for priority, hooks in sorted(filters.items()):
         for hook in hooks:
-            filter_args: list = [default_value] + list(args)
             max_args: int = hook["accepted_args"]
+            max_args = min(max_args, len(args) + 1)
+
+            filter_args: list = [default_value] + list(args)
+
             default_value = hook["callback"](*filter_args[:max_args])
 
     return default_value

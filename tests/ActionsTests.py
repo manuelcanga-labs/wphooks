@@ -173,3 +173,27 @@ class ActionsTests(unittest.TestCase):
 
         do_action(hook_name)
         self.assertTrue(received_action_var)
+
+    def test_do_action_fewer_args_than_accepted(self):
+        """Test doing an action with fewer arguments than accepted_args"""
+        hook_name: str = "test.fewer_args"
+        received_action_vars: tuple = ()
+
+        # accepted_args=2, but we will pass 0 or 1
+        def hook(*values) -> None:
+            nonlocal received_action_vars
+            received_action_vars = values
+
+        add_action(hook_name, hook, accepted_args=2)
+
+        # Pass 0 args (less than 2)
+        do_action(hook_name)
+        self.assertEqual(received_action_vars, ())
+
+        # Pass 1 arg (less than 2)
+        do_action(hook_name, 1)
+        self.assertEqual(received_action_vars, (1,))
+
+        # Pass 2 args (equal)
+        do_action(hook_name, 1, 2)
+        self.assertEqual(received_action_vars, (1, 2))

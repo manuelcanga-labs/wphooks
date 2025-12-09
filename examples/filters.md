@@ -71,3 +71,25 @@ add_filter("args_hook", sum_args, accepted_args=3)
 result = apply_filters("args_hook", 1, 2, 3, 4, 5)
 print(result) # Output: 6
 ```
+
+## Handling Fewer Arguments
+
+If the number of arguments passed to `apply_filters` is less than `accepted_args` specified in `add_filter`, the callback will be called with the available arguments.
+
+```python
+from wphooks import add_filter, apply_filters
+
+def optional_args_callback(val, extra=None):
+    if extra:
+        return val + extra
+    return val
+
+# Register filter with accepted_args=2 (val + extra)
+add_filter("optional_hook", optional_args_callback, accepted_args=2)
+
+# Apply with extra argument
+print(apply_filters("optional_hook", "Value", "Extra")) # Output: ValueExtra
+
+# Apply without extra argument
+print(apply_filters("optional_hook", "Value")) # Output: Value
+```

@@ -73,12 +73,17 @@ def do_action(hook_name: str, *args) -> bool:
     Args:
         hook_name (str): The name of the action to be executed.
         *args: Optional arguments to pass to the callback functions.
+
+    Note:
+        If the number of arguments passed to do_action is less than accepted_args
+        specified in add_action, the callback will be called with the available arguments.
     """
     actions: dict = wp_actions.get(hook_name, {})
     # pylint: disable-next=unused-variable
     for priority, hooks in sorted(actions.items()):
         for hook in hooks:
             max_args: int = hook["accepted_args"]
+            max_args = min(max_args, len(args))
 
             if args and max_args:
                 hook["callback"](*args[:max_args])
