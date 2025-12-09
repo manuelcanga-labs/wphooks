@@ -70,3 +70,21 @@ add_action("args_hook", sum_args, accepted_args=3)
 # 1 is the first argument (a), 2 and 3 are additional arguments (b, c), 4 and 5 are ignored
 do_action("args_hook", 1, 2, 3, 4, 5) # Output: Sum: 6
 ```
+
+## Actions Without Arguments
+
+You can also define and trigger actions that take no arguments by setting `accepted_args=0`.
+
+```python
+from wphooks import add_action, do_action
+
+def no_args_callback():
+    print("Executed without arguments!")
+
+# Register action with accepted_args=0
+add_action("no_args_hook", no_args_callback, accepted_args=0)
+
+# Trigger the action without arguments
+do_action("no_args_hook") 
+# Output: Executed without arguments!
+```

@@ -159,3 +159,17 @@ class ActionsTests(unittest.TestCase):
 
         do_action(hook_name, "start")
         self.assertEqual(received_action_var, "starta.startb.")
+
+    def test_do_action_no_args(self):
+        """Test doing an action without arguments"""
+        hook_name: str = "test.no_args"
+        received_action_var: bool = False
+
+        def hook() -> None:
+            nonlocal received_action_var
+            received_action_var = True
+
+        add_action(hook_name, hook, accepted_args=0)
+
+        do_action(hook_name)
+        self.assertTrue(received_action_var)
