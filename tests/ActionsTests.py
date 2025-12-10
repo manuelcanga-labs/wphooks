@@ -6,8 +6,8 @@ from wphooks.wp_actions import wp_actions, action, add_action, do_action
 class ActionsTests(unittest.TestCase):
     """Test action hooks"""
 
-    def tearDown(self):
-        wp_actions = {}
+    def setUp(self):
+        wp_actions.clear()
 
     def test_add_action(self):
         """Test adding a action with add_action"""
@@ -90,9 +90,11 @@ class ActionsTests(unittest.TestCase):
     def test_different_priority(self):
         """
         Test action priority.
-        Priority is used to specify the order in which the functions associated with a particular action are executed.
-        Lower numbers correspond with earlier execution, and functions with the same priority are executed in the order
-        in which they were added to the action.
+        Priority is used to specify the order in which the functions
+        associated with a particular action are executed.
+        Lower numbers correspond with earlier execution, and functions
+        with the same priority are executed in the order in which they were
+        added to the action.
         """
 
         hook_name: str = "test.priority"

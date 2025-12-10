@@ -6,15 +6,11 @@ from wphooks.wp_filters import wp_filters, filter, add_filter, apply_filters
 class FiltersTests(unittest.TestCase):
     """Test filter hooks"""
 
-    def tearDown(self):
-        global wp_filters
-        wp_filters = {}
+    def setUp(self):
+        wp_filters.clear()
 
     def test_add_filter(self):
         """Test adding a filter with add_filter"""
-
-        global wp_filters
-
         hook_name: str = "test.filter1"
         add_filter(hook_name, lambda x: True)
 
@@ -65,8 +61,11 @@ class FiltersTests(unittest.TestCase):
     def test_different_priority(self):
         """
         Test filter priority.
-        Priority is used to specify the order in which the functions associated with a particular filter are executed.
-        Lower numbers correspond with earlier execution, and functions with the same priority are executed in the order in which they were added to the filter.
+        Priority is used to specify the order in which the functions
+        associated with a particular filter are executed.
+        Lower numbers correspond with earlier execution, and functions
+        with the same priority are executed in the order in which they were
+        added to the filter.
         """
 
         hook_name: str = "test.priority"
