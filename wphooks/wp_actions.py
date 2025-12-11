@@ -60,7 +60,7 @@ def add_action(
     )
 
 
-def do_action(hook_name: str, *args) -> bool:
+def do_action(hook_name: str, *args) -> None:
     """
     Calls the callback functions that have been added to an action hook.
 
@@ -89,5 +89,3 @@ def do_action(hook_name: str, *args) -> bool:
                 hook["callback"](*args[:max_args])
             else:
                 hook["callback"]()
-
-    return True
