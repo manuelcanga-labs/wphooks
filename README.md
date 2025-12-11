@@ -1,8 +1,20 @@
 # WPHooks: WordPress-style Hooks for Python
 
+![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 **WPHooks** is a lightweight Python library that brings the powerful Event-Driven Architecture of WordPress—Actions and
 Filters—to your Python projects. It allows you to create extensible, modular, and plugin-friendly applications with
 ease.
+
+## Table of Contents
+
+- [Why WPHooks?](#why-wphooks)
+- [Types of Hooks](#types-of-hooks)
+    - [Actions](#actions)
+    - [Filters](#filters)
+- [Installation](#installation)
+- [Development & Testing](#development--testing)
 
 ## Why WPHooks?
 
@@ -28,31 +40,19 @@ Notification" feature. Instead of risking a bug by editing `process_order()`, yo
 `do_action('order_processed', order_id)` at the end. Your new Slack logic lives in a completely new file, hooked to
 `order_processed`.
 
-## Installation
-
-*(Assuming this will be a package or just added to the project)*
-
-```python
-from wphooks import add_action, do_action
-from wphooks import add_filter, apply_filters
-```
-
-## Concepts
-
-There are two main types of hooks:
-
-1. **Actions**: "Do something". They are events that trigger when something happens. They don't return a value. (e.g., "
-   User registered", "Page loaded").
-2. **Filters**: "Modify something". They accept a value, modify it, and return it. (e.g., "Format title", "Calculate
-   total price").
-
 ---
 
-## Actions
+## Types of Hooks
 
-Actions allow you to execute custom code at specific points in your execution flow.
+There are two main types of hooks available in this library:
 
-### Basic Example
+### Actions
+
+**Actions** are "do something" events that allow you to execute custom code at specific points in your execution flow.
+They trigger when specific events occur during your script's execution (e.g., "User registered", "Page loaded"). **They
+do not return a value.**
+
+#### Basic Example
 
 ```python
 from wphooks import add_action, do_action
@@ -74,13 +74,12 @@ do_action('user_registered', 123)
 
 **[See more Action examples and detailed usage](./examples/actions.md)**
 
----
+### Filters
 
-## Filters
+**Filters** are used to "modify something". They accept a data value, modify it, and return it (e.g., "Format title", "
+Calculate total price"). **They must always return a value.**
 
-Filters allow you to intercept data, modify it, and pass it back.
-
-### Basic Example
+#### Basic Example
 
 ```python
 from wphooks import add_filter, apply_filters
@@ -104,3 +103,42 @@ print(filtered_title)
 ```
 
 **[See more Filter examples and detailed usage](./examples/filters.md)**
+
+---
+
+## Installation
+
+You can install `wphooks` easily using pip:
+
+```bash
+pip install wphooks
+```
+
+Or install it directly from the source:
+
+```bash
+git clone https://github.com/manuelcanga/wphooks.git
+cd wphooks
+pip install .
+```
+
+Then, you can import it in your project:
+
+```python
+from wphooks import add_action, do_action
+from wphooks import add_filter, apply_filters
+```
+
+---
+
+## Development & Testing
+
+To run the unit tests for this project, you can use the built-in `unittest` module.
+
+Run the following command from the root of the project:
+
+```bash
+python3 -m unittest discover tests
+```
+
+This will automatically discover and run all tests located in the `tests/` directory.
